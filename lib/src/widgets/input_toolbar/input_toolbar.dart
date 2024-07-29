@@ -177,15 +177,16 @@ class InputToolbarState extends State<InputToolbar>
     final OverlayState overlay = Overlay.of(context);
     final RenderBox overlayRenderBox =
         overlay.context.findRenderObject() as RenderBox;
-    final double overlayHeight = overlayRenderBox.size.height;
-
     final RenderBox toolbarRenderBox = context.findRenderObject() as RenderBox;
-    final double toolBarY = toolbarRenderBox.localToGlobal(Offset.zero).dy;
-    final double overlayY = overlayRenderBox.localToGlobal(Offset.zero).dy;
 
-    final double toolbarRelativeOffset = overlayHeight - overlayY - toolBarY;
+    final double toolbarOffsetY =
+        toolbarRenderBox.localToGlobal(Offset.zero).dy;
+    final double overlayOffsetY =
+        overlayRenderBox.localToGlobal(Offset.zero).dy;
 
-    double bottomPosition = toolbarRelativeOffset;
+    final double toolbarTopOffset = toolbarOffsetY - overlayOffsetY;
+
+    double bottomPosition = overlayRenderBox.size.height - toolbarTopOffset;
     if (widget.inputOptions.inputToolbarMargin != null) {
       bottomPosition -= widget.inputOptions.inputToolbarMargin!.top -
           widget.inputOptions.inputToolbarMargin!.bottom;
